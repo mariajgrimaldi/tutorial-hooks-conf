@@ -1,28 +1,42 @@
 """
 Openedx Pipeline Steps for tutorial_hooks_conf.
 """
+import logging
+import crum
+
 from openedx_filters import PipelineStep
 from openedx_filters.learning.filters import CourseAboutRenderStarted
-
-import logging
 
 
 log = logging.getLogger()
 
 
-class OnlyVisibleIfLoggedIn(PipelineStep):
+ALLOWED_DOMAINS = [
+    "myuniversity.com",
+    "allowed.com",
+]
+
+
+class OnlyVisibleForEmailDomains(PipelineStep):
     """
-    Filter to make the /courses/<course-ID>/about page visible to logged in users only.
+    Filter to make the /courses/<course-ID>/about page visible to a subset of users.
     """
 
 
     def run_filter(self, context, template_name):
+        """
+        Compares the user domain to a list of allowe domains.
+        The filter only continues if everything matches.
+        """
 
-        log.warning("we are in!")
+        user = crum.get_current_request().user
 
+        try:
+            domain = user.email.split('@')[1]
+            if domain in ALLOWED_DOMAINS:
+                return
 
+        except AttributeError:
+            pass
 
-        return {
-            "context": context,
-            "template_name": template_name,
-        }
+        raise CourseAboutRenderStarted.RedirectToPage(message="Not allowed", redirect_to="/courses/")

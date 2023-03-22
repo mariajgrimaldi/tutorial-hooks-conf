@@ -13,6 +13,6 @@ def plugin_settings(settings):
     settings.OPEN_EDX_FILTERS_CONFIG["org.openedx.learning.course_about.render.started.v1"] = {
         "fail_silently": False,
         "pipeline": [
-            "tutorial_hooks_conf.pipeline.OnlyVisibleIfLoggedIn"
+            "tutorial_hooks_conf.pipeline.OnlyVisibleForEmailDomains"
         ]
     }
