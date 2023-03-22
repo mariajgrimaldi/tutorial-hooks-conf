@@ -56,7 +56,7 @@ class EnrollmentByEmailDomains(PipelineStep):
         try:
             domain = user.email.split('@')[1]
             if domain in ALLOWED_DOMAINS:
-                return
+                return {}
 
         except AttributeError:
             pass
