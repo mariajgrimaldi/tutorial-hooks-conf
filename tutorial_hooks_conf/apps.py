@@ -18,5 +18,16 @@ class TutorialHooksConfConfig(AppConfig):
                 'common': {'relative_path': 'settings.common'},
             },
         },
+        "signals_config": {
+            "lms.djangoapp": {
+                "relative_path": "receivers",
+                "receivers": [
+                    {
+                        "receiver_func_name": "send_enrollment_data_to_webhook",
+                        "signal_path": "openedx_events.learning.signals.COURSE_ENROLLMENT_CREATED",
+                    },
+                ],
+            }
+        },
     }
 
