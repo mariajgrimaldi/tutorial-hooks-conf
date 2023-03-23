@@ -15,6 +15,9 @@ ALLOWED_DOMAINS = [
     "myuniversity.com",
     "allowed.com",
 ]
+SPECIAL_ORGS = [
+    "Demo",
+]
 
 
 class OnlyVisibleForEmailDomains(PipelineStep):
@@ -28,13 +31,15 @@ class OnlyVisibleForEmailDomains(PipelineStep):
         Compares the user domain to a list of allowe domains.
         The filter only continues if everything matches.
         """
+        if context["course"].org not in SPECIAL_ORGS:
+            return {}
 
         user = crum.get_current_request().user
 
         try:
             domain = user.email.split('@')[1]
             if domain in ALLOWED_DOMAINS:
-                return
+                return {}
 
         except AttributeError:
             pass
@@ -52,6 +57,8 @@ class EnrollmentByEmailDomains(PipelineStep):
         Compares the user domain to a list of allowe domains.
         The filter only continues if everything matches.
         """
+        if course_key.org not in SPECIAL_ORGS:
+            return {}
 
         try:
             domain = user.email.split('@')[1]

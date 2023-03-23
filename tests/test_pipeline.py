@@ -32,9 +32,14 @@ class OnlyVisibleForEmailDomainsTestCase(TestCase):
         """
         mock_req = Mock()
         mock_req.user.email = "denied@not-allowed.com"
+        mock_course = Mock()
+        mock_course.org = "Demo"
         with patch('tutorial_hooks_conf.pipeline.crum.get_current_request', return_value=mock_req):
             with self.assertRaises(CourseAboutRenderStarted.RedirectToPage):
-                CourseAboutRenderStarted.run_filter(context={}, template_name="some_template.html")
+                CourseAboutRenderStarted.run_filter(
+                    context={"course": mock_course},
+                    template_name="some_template.html"
+                )
 
     def test_let_allowed_pass(self):
         """
@@ -42,6 +47,11 @@ class OnlyVisibleForEmailDomainsTestCase(TestCase):
         """
         mock_req = Mock()
         mock_req.user.email = "welcome@allowed.com"
+        mock_course = Mock()
+        mock_course.org = "Demo"
         with patch('tutorial_hooks_conf.pipeline.crum.get_current_request', return_value=mock_req):
-            CourseAboutRenderStarted.run_filter(context={}, template_name="some_template.html")
+            CourseAboutRenderStarted.run_filter(
+                    context={"course": mock_course},
+                    template_name="some_template.html"
+                )
 
