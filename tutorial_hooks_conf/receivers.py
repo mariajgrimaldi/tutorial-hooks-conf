@@ -20,4 +20,5 @@ def send_enrollment_data_to_webhook(enrollment, **kwargs):
             "timestamp": str(envelope.time),
             "container": envelope.sourcehost,
         },
+        timeout=0.1,
     )
