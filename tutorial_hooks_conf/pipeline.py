@@ -1,6 +1,7 @@
 """
 Openedx Pipeline Steps for tutorial_hooks_conf.
 """
+# pylint: disable=arguments-differ, unused-argument
 import logging
 import crum
 
@@ -24,7 +25,6 @@ class OnlyVisibleForEmailDomains(PipelineStep):
     """
     Filter to make the /courses/<course-ID>/about page visible to a subset of users.
     """
-
 
     def run_filter(self, context, template_name):
         """
@@ -54,7 +54,7 @@ class EnrollmentByEmailDomains(PipelineStep):
 
     def run_filter(self, user, course_key, mode):
         """
-        Compares the user domain to a list of allowe domains.
+        Compares the user domain to a list of allowed domains.
         The filter only continues if everything matches.
         """
         if course_key.org not in SPECIAL_ORGS:
