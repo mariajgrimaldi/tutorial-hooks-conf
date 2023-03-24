@@ -3,8 +3,8 @@
 Tests for the `tutorial-hooks-conf` filters module.
 """
 
-from django.test import TestCase, override_settings
 from unittest.mock import Mock, patch
+from django.test import TestCase, override_settings
 
 from openedx_filters.learning.filters import (
     CourseAboutRenderStarted,
@@ -54,4 +54,3 @@ class OnlyVisibleForEmailDomainsTestCase(TestCase):
                     context={"course": mock_course},
                     template_name="some_template.html"
                 )
-
